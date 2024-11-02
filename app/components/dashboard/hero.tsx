@@ -28,7 +28,7 @@ const DashboardPage = () => {
     { name: 'Pengaturan', icon: Settings },
   ];
 
-  const getWeatherIcon = (condition : String) => {
+  const getWeatherIcon = (condition : any) => {
     switch (condition) {
       case 'Cerah': return <Sun className="text-yellow-400" />;
       case 'Mendung': return <Cloud className="text-gray-400" />;
@@ -39,7 +39,7 @@ const DashboardPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-800 to-slate-900 p-4">
-    <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-6 max-w-7xl mx-auto shadow-2xl">
+    <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-6 mx-auto shadow-2xl">
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
         
         {/* Sidebar */}
