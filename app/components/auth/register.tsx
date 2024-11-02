@@ -43,10 +43,10 @@ export default function RegisterForm() {
           <div className="bg-white rounded-lg shadow-xl p-8">
             {/* Header */}
             <div className="mb-8 text-center">
-              <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto">
-                <MountainIcon className="w-16 h-12 fill-emerald-700 stroke-none" />
+              <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto">
+                <MountainIcon className="w-16 h-12 fill-amber-700 stroke-none" />
               </div>
-              <h1 className="text-emerald-600 font-bold text-4xl my-4">
+              <h1 className="text-amber-600 font-bold text-4xl my-4">
                 TERRATOPIA
               </h1>
               <h2 className="text-2xl font-bold text-gray-900 mt-4">
@@ -78,7 +78,7 @@ export default function RegisterForm() {
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       required
-                      className="block w-full pl-10 pr-3 py-2 border text-slate-900 border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
+                      className="block w-full pl-10 pr-3 py-2 border text-slate-900 border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 sm:text-sm"
                       placeholder="John"
                     />
                   </div>
@@ -103,7 +103,7 @@ export default function RegisterForm() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="block w-full pl-10 pr-3 py-2 border text-slate-900 border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
+                    className="block w-full pl-10 pr-3 py-2 border text-slate-900 border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 sm:text-sm"
                     placeholder="you@example.com"
                   />
                 </div>
@@ -127,7 +127,7 @@ export default function RegisterForm() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    className="block w-full pl-10 pr-10 py-2 border text-slate-900 border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
+                    className="block w-full pl-10 pr-10 py-2 border text-slate-900 border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 sm:text-sm"
                     placeholder="••••••••"
                   />
                   <button
@@ -162,7 +162,7 @@ export default function RegisterForm() {
                     value={confPassword}
                     onChange={(e) => setConfPassword(e.target.value)}
                     required
-                    className="block w-full pl-10 pr-10 py-2 border text-slate-900 border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
+                    className="block w-full pl-10 pr-10 py-2 border text-slate-900 border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 sm:text-sm"
                     placeholder="••••••••"
                   />
                   <button
@@ -183,7 +183,7 @@ export default function RegisterForm() {
               <div>
                 <button
                   type="submit"
-                  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500"
+                  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-amber-600 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500"
                 >
                   Create Account
                 </button>
@@ -196,7 +196,7 @@ export default function RegisterForm() {
                 Already have an account?{" "}
                 <Link
                   to="/login"
-                  className="text-emerald-600 hover:text-emerald-800"
+                  className="text-amber-600 hover:text-amber-800"
                 >
                   Log in
                 </Link>
@@ -205,11 +205,6 @@ export default function RegisterForm() {
           </div>
         </div>
       </main>
-
-      {/* Footer */}
-      <footer className="bg-emerald-600 text-white text-center py-4">
-        <p className="text-sm">© 2024 TERRATOPIA. All rights reserved.</p>
-      </footer>
     </div>
   );
 }

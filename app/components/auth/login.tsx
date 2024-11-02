@@ -37,9 +37,9 @@ export default function LoginForm() {
           <div className="bg-white rounded-lg shadow-xl p-8">
             {/* Logo/Icon */}
             <div className="mb-8 text-center">
-              <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto">
+              <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto">
                 <svg
-                  className="w-8 h-8 text-emerald-600"
+                  className="w-8 h-8 text-amber-600"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -80,7 +80,7 @@ export default function LoginForm() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="block w-full pl-10 pr-3 py-2 border text-slate-900 border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
+                    className="block w-full pl-10 pr-3 py-2 border text-slate-900 border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 sm:text-sm"
                     placeholder="you@example.com"
                   />
                 </div>
@@ -104,7 +104,7 @@ export default function LoginForm() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    className="block w-full pl-10 pr-10 py-2 border text-slate-900 border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
+                    className="block w-full pl-10 pr-10 py-2 border text-slate-900 border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 sm:text-sm"
                     placeholder="••••••••"
                   />
                   <button
@@ -127,7 +127,7 @@ export default function LoginForm() {
                   <input
                     id="remember-me"
                     type="checkbox"
-                    className="before: appearance-none checked:bg-emerald-600 checked:border-transparent bg-slate-100 rounded-sm after: h-4 w-4 text-emerald-600 focus:ring-emerald-50"
+                    className="before: appearance-none checked:bg-amber-600 checked:border-transparent bg-slate-100 rounded-sm after: h-4 w-4 text-amber-600 focus:ring-amber-50"
                     checked={rememberMe}
                     onChange={(e) => setRememberMe(e.target.checked)}
                   />
@@ -141,7 +141,7 @@ export default function LoginForm() {
                 <div className="text-sm">
                   <Link
                     to="/forgot-password"
-                    className="font-medium text-emerald-600 hover:text-emerald-500"
+                    className="font-medium text-amber-600 hover:text-amber-500"
                   >
                     Forgot your password?
                   </Link>
@@ -151,7 +151,7 @@ export default function LoginForm() {
               {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-colors duration-300"
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-amber-600 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 transition-colors duration-300"
               >
                 Sign in
               </button>
@@ -163,7 +163,7 @@ export default function LoginForm() {
                 Don't have an account?{" "}
                 <Link
                   to="/register"
-                  className="font-medium text-emerald-600 hover:text-emerald-500"
+                  className="font-medium text-amber-600 hover:text-amber-500"
                 >
                   Sign up for free
                 </Link>
@@ -205,29 +205,6 @@ export default function LoginForm() {
           </div> */}
         </div>
       </main>
-
-      {/* Footer */}
-      <footer className="mt-8 border-t border-gray-200">
-        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-          <p className="text-center text-sm text-gray-500">
-            © 2024 Terratopia. All rights reserved. By signing in, you agree to
-            our{" "}
-            <Link
-              to="/terms"
-              className="text-emerald-600 hover:text-emerald-500"
-            >
-              Terms of Service
-            </Link>{" "}
-            and{" "}
-            <Link
-              to="/privacy"
-              className="text-emerald-600 hover:text-emerald-500"
-            >
-              Privacy Policy
-            </Link>
-          </p>
-        </div>
-      </footer>
     </div>
   );
 }

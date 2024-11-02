@@ -37,7 +37,7 @@ export default function SupportContact() {
         <div className="flex flex-col lg:flex-row justify-between gap-12 mb-20">
           <div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-800 leading-tight max-w-xl tracking-tight">
-              Hubungi <span className="text-emerald-600">TerraTopia</span> untuk
+              Hubungi <span className="text-amber-600">TerraTopia</span> untuk
               bantuan
             </h1>
             <p className="max-w-2xl text-xl md:text-2xl text-gray-600 leading-relaxed font-light italic">
@@ -47,7 +47,7 @@ export default function SupportContact() {
             </p>
           </div>
           <div>
-            <PiPlant size={40}/>
+            <PiPlant size={40} />
           </div>
         </div>
 
@@ -61,7 +61,7 @@ export default function SupportContact() {
                 className="transform transition-all duration-300 hover:translate-x-2"
               >
                 <div className="flex items-center gap-4 mb-3">
-                  <span className="flex items-center justify-center w-10 h-10 rounded-full bg-emerald-100 text-2xl">
+                  <span className="flex items-center justify-center w-10 h-10 rounded-full bg-amber-100 text-2xl">
                     {method.icon}
                   </span>
                   <h2 className="text-xl md:text-2xl font-bold text-gray-800 tracking-tight">
@@ -69,7 +69,7 @@ export default function SupportContact() {
                   </h2>
                 </div>
                 <div className="pl-14">
-                  <p className="text-lg text-emerald-600 font-semibold mb-2">
+                  <p className="text-lg text-amber-600 font-semibold mb-2">
                     {method.value}
                   </p>
                   <p className="text-lg text-gray-600 leading-relaxed">
@@ -83,7 +83,7 @@ export default function SupportContact() {
           {/* Contact Form Section */}
           <div className="lg:w-1/2">
             <div className="relative">
-              <div className="absolute inset-0 bg-emerald-100 rounded-xl transform rotate-3"></div>
+              <div className="absolute inset-0 bg-amber-100 rounded-xl transform rotate-3"></div>
               <div className="relative bg-white rounded-xl shadow-xl p-8 transform transition-all duration-300">
                 <h3 className="text-2xl font-bold text-gray-800 mb-6">
                   Kirim Pesan
@@ -95,7 +95,7 @@ export default function SupportContact() {
                     </label>
                     <input
                       type="text"
-                      className="w-full px-4 py-3 rounded-lg border bg-white border-gray-300 focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 transition-all duration-300"
+                      className="w-full px-4 py-3 rounded-lg border bg-white border-gray-300 focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition-all duration-300"
                       placeholder="Masukkan nama lengkap Anda"
                     />
                   </div>
@@ -105,7 +105,7 @@ export default function SupportContact() {
                     </label>
                     <input
                       type="email"
-                      className="w-full px-4 py-3 rounded-lg border bg-white border-gray-300 focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 transition-all duration-300"
+                      className="w-full px-4 py-3 rounded-lg border bg-white border-gray-300 focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition-all duration-300"
                       placeholder="Masukkan email Anda"
                     />
                   </div>
@@ -114,13 +114,13 @@ export default function SupportContact() {
                       Pesan
                     </label>
                     <textarea
-                      className="w-full px-4 py-3 rounded-lg border bg-white border-gray-300 focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 transition-all duration-300 h-32"
+                      className="w-full px-4 py-3 rounded-lg border bg-white border-gray-300 focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition-all duration-300 h-32"
                       placeholder="Tuliskan pesan Anda"
                     ></textarea>
                   </div>
                   <button
                     type="submit"
-                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-300 transform hover:scale-[1.02]"
+                    className="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-300 transform hover:scale-[1.02]"
                   >
                     Kirim Pesan
                   </button>

@@ -1,5 +1,10 @@
 import { useState } from "react";
-import { ChevronLeft, ChevronRight, BadgeCheck, LucideIcon } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  BadgeCheck,
+  LucideIcon,
+} from "lucide-react";
 
 interface FarmerReview {
   id: string;
@@ -102,11 +107,11 @@ export default function IndexReview() {
           <div className="space-y-8">
             <div className="space-y-4">
               <h1 className="text-4xl lg:text-5xl font-bold tracking-tight text-gray-900">
-                Review dari Petani Kami
+                Review dari <span className="text-amber-600">Petani Kami</span>
               </h1>
               <p className="text-lg text-gray-600">
-                Pengalaman nyata dari petani yang telah menggunakan teknologi
-                AI kami untuk mendukung usaha tani mereka.
+                Pengalaman nyata dari petani yang telah menggunakan teknologi AI
+                kami untuk mendukung usaha tani mereka.
               </p>
             </div>
 
@@ -135,7 +140,7 @@ export default function IndexReview() {
                           {currentReview.farmerName}
                         </h3>
                         {currentReview.verifiedFarmer && (
-                          <BadgeCheck className="w-5 h-5 text-emerald-500" />
+                          <BadgeCheck className="w-5 h-5 text-amber-500" />
                         )}
                       </div>
                       <p className="text-sm text-gray-500">
@@ -169,7 +174,7 @@ export default function IndexReview() {
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="absolute -z-10 inset-0 bg-gradient-to-r from-green-50 to-yellow-50 blur-3xl opacity-30 rounded-full transform translate-x-8 translate-y-8" />
+            <div className="absolute -z-10 inset-0 bg-gradient-to-r from-amber-50 to-yellow-50 blur-3xl opacity-30 rounded-full transform translate-x-8 translate-y-8" />
           </div>
         </div>
 
@@ -178,9 +183,7 @@ export default function IndexReview() {
             <div
               key={index}
               className={`h-1.5 rounded-full transition-all duration-300 ${
-                index === currentIndex
-                  ? "w-8 bg-emerald-500"
-                  : "w-2 bg-gray-200"
+                index === currentIndex ? "w-8 bg-amber-500" : "w-2 bg-gray-200"
               }`}
             />
           ))}

@@ -33,11 +33,11 @@ const accordionList: AccordionProps[] = [
 
 export default function IndexSupport() {
   return (
-    <div className="h-[170vh] bg-gradient-to-br from-green-900 to-green-700">
+    <div className="h-[170vh] bg-gradient-to-br from-amber-700 to-amber-800">
       <div className="w-[90vw] mx-auto px-6 lg:px-8 h-full items-center">
         <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-between h-full gap-16">
           <div className="lg:w-1/2 h-full relative hidden lg:block">
-            <div className="absolute inset-0 bg-green-700/10 backdrop-blur-sm rounded-3xl" />
+            <div className="absolute inset-0 bg-amber-700/10 backdrop-blur-sm rounded-3xl" />
             <img
               src="/index/support.jpg"
               alt="Gambar Dukungan"
@@ -55,7 +55,7 @@ export default function IndexSupport() {
               </h1>
 
               <p className="text-lg text-gray-300 leading-relaxed tracking-wide">
-                <span className="text-green-200 font-medium">TerraTopia</span>{" "}
+                <span className="text-amber-200 font-medium">TerraTopia</span>{" "}
                 adalah pusat layanan pertanian modern yang berkomitmen untuk
                 memberikan pengalaman yang nyaman, terjangkau, dan berkualitas
                 tinggi dalam mendukung kesejahteraan petani.
@@ -69,13 +69,13 @@ export default function IndexSupport() {
                   className="group relative overflow-hidden"
                 >
                   <div
-                    className="relative p-6 bg-green-100/10 backdrop-blur-md rounded-2xl 
-                                border border-green-100/20 hover:border-green-100/40
+                    className="relative p-6 bg-amber-100/10 backdrop-blur-md rounded-2xl 
+                                border border-amber-100/20 hover:border-amber-100/40
                                 transition-all duration-300 ease-in-out
-                                hover:bg-green-100/20"
+                                hover:bg-amber-100/20"
                   >
                     <div className="space-y-2">
-                      <h2 className="inline-flex items-center gap-2 text-xl font-medium text-green-100 tracking-wide">
+                      <h2 className="inline-flex items-center gap-2 text-xl font-medium text-amber-100 tracking-wide">
                         {list.icon}
                         {list.title}
                       </h2>

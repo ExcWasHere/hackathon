@@ -29,7 +29,7 @@ const DashboardMainPage = () => {
   const [expire, setExpire] = useState("");
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
-      
+
   const logout = async () => {
     try {
       await axios.delete("http://localhost:5000/logout", {
@@ -87,7 +87,7 @@ const DashboardMainPage = () => {
     - pH tanah: ${data.pH}
 
     
-    Berikan rekomendasi tanaman yang cocok untuk ditanam tanpa jelaskan. Berikan 3 saja, jika inputan tidak masuk akal maka jawab: data tersebut tidak masuk akal`;
+    Berikan rekomendasi tanaman yang cocok untuk ditanam tanpa jelaskan. Tolong dalam bahasa Indonesia, dan kemudian mainkan asumsi saja tidak 100% akurat tidak masalah, Berikan 3 saja, jika inputan tidak masuk akal maka jawab: data tersebut tidak masuk akal`;
   };
 
   const handleInputChange = (e: any) => {
@@ -116,7 +116,7 @@ const DashboardMainPage = () => {
     }
   };
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
-  const [activeNav, setActiveNav] = useState("Manajemen Lahan");
+  const [activeNav, setActiveNav] = useState("Dashboard");
 
   const navigationItems = [
     { name: "Dashboard", icon: NotebookIcon },
@@ -130,7 +130,7 @@ const DashboardMainPage = () => {
       case "clouds":
         return <Cloud className="w-5 h-5 text-gray-400" />;
       case "rain":
-        return <CloudRain className="w-5 h-5 text-blue-400" />;
+        return <CloudRain className="w-5 h-5 text-amber-400" />;
       default:
         return <Cloud className="w-5 h-5 text-gray-400" />; // Default to Cloud if unknown
     }
@@ -203,16 +203,14 @@ const DashboardMainPage = () => {
       fetchWeather();
     }, [coordinates]);
 
-
-
     return (
       <>
-        <div className="mt-16 col-span-12 md:col-span-3 text-black">
+        <div className="h-fit shadow-md rounded-lg col-span-12 md:col-span-3 text-black">
           <form
             onSubmit={handleCoordinatesSubmit}
-            className="space-y-3 rounded-t-xl bg-gradient-to-tr from-blue-800 to-blue-900 p-4"
+            className="space-y-3 rounded-t-xl bg-gradient-to-tr from-amber-600 to-amber-700 p-4"
           >
-            <label className="text-white py-2 text-xl text-gray-600">
+            <label className="py-2 text-xl text-white">
               Masukkan Koordinat Lokasi Anda
             </label>
             <input
@@ -235,12 +233,12 @@ const DashboardMainPage = () => {
             />
             <button
               type="submit"
-              className="w-full p-2 bg-blue-500 rounded-lg shadow-md text-white hover:bg-blue-600 transition-colors"
+              className="w-full p-2 bg-amber-500 rounded-lg shadow-md text-white hover:bg-amber-600 transition-colors"
             >
               Submit
             </button>
           </form>
-          <div className="bg-gradient-to-br from-blue-800 to-blue-900 text-white p-6 rounded-b-xl shadow-lg">
+          <div className="bg-gradient-to-br from-amber-600 to-amber-700 text-white p-6 rounded-b-xl shadow-lg">
             <h2 className="text-xl font-bold mb-6 flex items-center">
               <Cloud className="w-5 h-5 mr-2" />
               Perkiraan Cuaca
@@ -274,7 +272,7 @@ const DashboardMainPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-green-300 p-2">
+    <div className="min-h-screen bg-amber-950 p-2">
       <div className="bg-white/100  rounded-3xl p-6 mx-auto ">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
           {/* Sidebar */}
@@ -304,7 +302,10 @@ const DashboardMainPage = () => {
                     <span>{item.name}</span>
                   </div>
                 ))}
-                <button onClick={logout} className="flex items-center space-x-2 p-3 text-gray-500 hover:bg-red-50 hover:text-red-500 rounded-lg cursor-pointer transition-all duration-200">
+                <button
+                  onClick={logout}
+                  className="flex items-center space-x-2 p-3 text-gray-500 hover:bg-red-50 hover:text-red-500 rounded-lg cursor-pointer transition-all duration-200"
+                >
                   <LogOut size={20} />
                   <span>Log Out</span>
                 </button>
@@ -373,12 +374,9 @@ const DashboardMainPage = () => {
 
             {/* Status Section */}
             <div>
-              <div className="flex justify-between items-center mb-6 w-[32rem]">
-                <h2 className="text-2xl font-bold text-slate-900">
-                  Manajemen Lahan
-                </h2>
-                <h2 className="hidden lg:block text-2xl font-bold text-slate-900">
-                  Output
+              <div className="flex justify-start items-center mb-6 w-full">
+                <h2 className="text-2xl text-center font-bold text-slate-900">
+                  Rekomendasi Tanaman
                 </h2>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -431,7 +429,7 @@ const DashboardMainPage = () => {
                             className="w-full px-6 py-2 rounded-2xl bg-gray-100 text-black placeholder-gray-400 focus:outline-none focus:ring-2
                            focus:ring-indigo-500 focus:border-transparent transition-all duration-200
                            shadow-lg backdrop-blur-sm"
-                            placeholder="Masukkan suhu rata-rata..."
+                            placeholder="Masukkan pH tanah..."
                             step="0.1"
                           />
                         </div>
@@ -475,7 +473,7 @@ const DashboardMainPage = () => {
 
                       <button
                         type="submit"
-                        className="w-full px-6 py-3 rounded-2xl bg-indigo-500 hover:bg-indigo-600
+                        className="w-full px-6 py-3 rounded-2xl bg-amber-500 hover:bg-indigo-600
                        text-white transition-colors duration-200 disabled:opacity-50
                        disabled:cursor-not-allowed font-semibold"
                         disabled={

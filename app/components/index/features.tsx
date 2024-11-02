@@ -18,42 +18,42 @@ interface FeatureProps {
 const featureList: FeatureProps[] = [
   {
     id: 1,
-    icon: <IoAnalytics className="h-6 w-6 text-emerald-600" />,
+    icon: <IoAnalytics className="h-6 w-6 text-amber-600" />,
     title: "AI Analisis Tanah & Nutrisi",
     subtitle:
-      "Analisis tanah real-time menggunakan AI untuk memberikan rekomendasi nutrisi yang tepat dan optimal bagi tanaman Anda.",
+      "Analisis tanah real-time menggunakan AI untuk memberikan rekomendasi nutrisi yang tepat dan optimal bagi tanaman Anda. Sehingga memaksimalkan produksi",
   },
   {
     id: 2,
-    icon: <IoCloud className="h-6 w-6 text-emerald-600" />,
+    icon: <IoCloud className="h-6 w-6 text-amber-600" />,
     title: "Prediksi Cuaca & Irigasi",
     subtitle:
-      "Sistem AI yang memprediksi pola cuaca dan mengotomatisasi sistem irigasi untuk penggunaan air yang efisien.",
+      "Sistem AI canggih yang mampu memprediksi pola cuaca secara akurat dan mengotomatisasi sistem irigasi, memastikan penggunaan air yang efisien. Teknologi ini membantu petani",
   },
   {
     id: 3,
-    icon: <IoFlower className="h-6 w-6 text-emerald-600" />,
+    icon: <IoFlower className="h-6 w-6 text-amber-600" />,
     title: "Monitoring Pertumbuhan Tanaman",
     subtitle:
-      "Pemantauan kesehatan tanaman AI untuk deteksi dini hama dan penyakit.",
+      "Pemantauan kesehatan tanaman menggunakan AI memungkinkan deteksi dini hama dan penyakit, membantu petani mengambil tindakan preventif lebih cepat dan efektif,",
   },
   {
     id: 4,
-    icon: <IoBarChart className="h-6 w-6 text-emerald-600" />,
+    icon: <IoBarChart className="h-6 w-6 text-amber-600" />,
     title: "Optimasi Hasil Panen",
     subtitle:
       "AI menganalisis data historis dan kondisi untuk memaksimalkan hasil panen dan efisiensi sumber daya.",
   },
   {
     id: 5,
-    icon: <IoServer className="h-6 w-6 text-emerald-600" />,
+    icon: <IoServer className="h-6 w-6 text-amber-600" />,
     title: "Smart Farming Database",
     subtitle:
       "Database komprehensif yang diperkaya AI tentang varietas tanaman, teknik budidaya, dan praktik pertanian terbaik.",
   },
   {
     id: 6,
-    icon: <IoLeaf className="h-6 w-6 text-emerald-600" />,
+    icon: <IoLeaf className="h-6 w-6 text-amber-600" />,
     title: "Pertanian Berkelanjutan",
     subtitle:
       "Rekomendasi AI untuk praktik pertanian ramah lingkungan dan berkelanjutan.",
@@ -62,11 +62,11 @@ const featureList: FeatureProps[] = [
 
 const FeatureCard = ({ feature }: { feature: FeatureProps }) => {
   return (
-    <div className="bg-white rounded-xl p-8 relative hover:scale-105 hover:shadow-lg transition-all duration-300">
-      <div className="absolute inset-5 bg-emerald-100 rounded-xl transform rotate-[1deg]"></div>
+    <div className="bg-white rounded-xl p-8 relative hover:scale-105 hover:-translate-y-2 hover:shadow-lg transition-all duration-300">
+      <div className="absolute inset-5 bg-amber-100 rounded-xl transform rotate-[1deg]"></div>
       <div className="relative bg-white rounded-xl p-6 shadow-lg">
         <div className="flex items-center gap-4 mb-4">
-          <div className="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-100">
+          <div className="flex items-center justify-center w-12 h-12 rounded-full bg-amber-100">
             {feature.icon}
           </div>
           <h3 className="text-xl font-bold text-gray-800 tracking-tight">
@@ -94,7 +94,7 @@ export default function IndexFeatures(): JSX.Element {
           </p>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-800 leading-tight max-w-xl tracking-tight">
             Smart Farming dengan
-            <span className="text-emerald-600"> Kecerdasan Buatan</span>
+            <span className="text-amber-600"> Kecerdasan Buatan</span>
           </h1>
         </div>
 
@@ -107,7 +107,7 @@ export default function IndexFeatures(): JSX.Element {
         <div className="mt-20 flex flex-col lg:flex-row items-center justify-between gap-12">
           <div className="lg:w-1/2">
             <div className="relative">
-              <div className="absolute inset-0 bg-emerald-200 rounded-xl transform -rotate-3"></div>
+              <div className="absolute inset-0 bg-amber-200 rounded-xl transform -rotate-3"></div>
               <img
                 src="/index/features.jpg"
                 alt="Smart Farming"
@@ -119,11 +119,11 @@ export default function IndexFeatures(): JSX.Element {
           <div className="lg:w-1/2">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800 tracking-tight mb-6">
               Mengapa Memilih Platform{" "}
-              <span className="text-emerald-600">Smart Farming</span> Kami?
+              <span className="text-amber-600">Smart Farming</span> Kami?
             </h2>
             <div className="space-y-6">
               <div className="flex items-center gap-4">
-                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 font-semibold">
+                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-amber-100 text-amber-600 font-semibold">
                   1
                 </span>
                 <p className="text-lg text-gray-600">
@@ -131,7 +131,7 @@ export default function IndexFeatures(): JSX.Element {
                 </p>
               </div>
               <div className="flex items-center gap-4">
-                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 font-semibold">
+                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-amber-100 text-amber-600 font-semibold">
                   2
                 </span>
                 <p className="text-lg text-gray-600">
@@ -140,7 +140,7 @@ export default function IndexFeatures(): JSX.Element {
                 </p>
               </div>
               <div className="flex items-center gap-4">
-                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 font-semibold">
+                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-amber-100 text-amber-600 font-semibold">
                   3
                 </span>
                 <p className="text-lg text-gray-600">

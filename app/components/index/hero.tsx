@@ -1,49 +1,37 @@
 import { useEffect, useState, useCallback } from "react";
 
-interface BlogPost {
+interface SlideContent {
   id: number;
   title: string;
   subtitle: string;
   category: string;
   image: string;
-  profileImage: string;
-  profileName: string;
-  date: string;
 }
 
-const blogResources: BlogPost[] = [
-    {
-      id: 1,
-      title: "Pertanian Berkelanjutan: Solusi untuk Masa Depan",
-      subtitle: "Teknik pertanian yang ramah lingkungan untuk keseimbangan alam.",
-      category: "Pertanian Berkelanjutan",
-      image: "/index/index1.jpg",
-      profileImage: "/template.jpg",
-      profileName: "Luna Hernandez",
-      date: "2024-10-12",
-    },
-    {
-      id: 2,
-      title: "Resep Hasil Kebun: Sehat dan Mudah Dibuat",
-      subtitle: "Olahan lezat dari bahan alami yang baik untuk tubuh.",
-      category: "Resep dan Kesehatan",
-      image: "/index/index2.jpg",
-      profileImage: "template2.jpg",
-      profileName: "Kokoro Hernandez",
-      date: "2024-10-10",
-    },
-    {
-      id: 3,
-      title: "Komunikasi dalam Pertanian: Bangun Relasi yang Kuat",
-      subtitle: "Kunci komunikasi efektif untuk kerjasama yang sukses.",
-      category: "Pengembangan Diri",
-      image: "/index/index3.jpg",
-      profileImage: "template3.jpg",
-      profileName: "Honoka Hernandez",
-      date: "2024-10-08",
-    },
-  ];
-  
+const heroContent: SlideContent[] = [
+  {
+    id: 1,
+    title: "Membangun Masa Depan Pertanian",
+    subtitle: "Inovasi Berkelanjutan untuk Indonesia",
+    category: "Visi",
+    image: "/index/index1.jpg",
+  },
+  {
+    id: 2,
+    title: "Dari Alam, Untuk Kehidupan",
+    subtitle: "Melestarikan Tradisi, Merangkul Teknologi",
+    category: "Misi",
+    image: "/index/index2.jpg",
+  },
+  {
+    id: 3,
+    title: "Bersama Menuju Kemandirian",
+    subtitle: "Pertanian Modern yang Ramah Lingkungan",
+    category: "Tujuan",
+    image: "/index/index3.jpg",
+  },
+];
+
 interface IndicatorProps {
   isActive: boolean;
   onClick: () => void;
@@ -65,9 +53,7 @@ export default function IndexHero() {
   const nextSlide = useCallback(() => {
     setIsAnimating(true);
     setTimeout(() => {
-      setCurrentPostIndex(
-        (prevIndex) => (prevIndex + 1) % blogResources.length
-      );
+      setCurrentPostIndex((prevIndex) => (prevIndex + 1) % heroContent.length);
       setIsAnimating(false);
     }, 500);
   }, []);
@@ -87,18 +73,18 @@ export default function IndexHero() {
   };
 
   const getPreviousIndex = () =>
-    (currentPostIndex - 1 + blogResources.length) % blogResources.length;
+    (currentPostIndex - 1 + heroContent.length) % heroContent.length;
 
-  const getNextIndex = () => (currentPostIndex + 1) % blogResources.length;
+  const getNextIndex = () => (currentPostIndex + 1) % heroContent.length;
 
   return (
-    <div className="relative h-screen mx-auto overflow-hidden">
+    <div className="relative h-[calc(100vh-4rem)] md:h-screen w-full mx-auto overflow-hidden">
       <div className="absolute inset-0">
         {[getPreviousIndex(), currentPostIndex, getNextIndex()].map(
           (index, i) => (
             <img
               key={`slide-${index}`}
-              src={blogResources[index].image}
+              src={heroContent[index].image}
               className={`absolute inset-0 object-cover w-full h-full transition-transform duration-500 ease-in-out ${
                 i === 0
                   ? isAnimating
@@ -113,62 +99,44 @@ export default function IndexHero() {
                   : "translate-x-full"
               }`}
               style={{
-                objectPosition: "center 40%",
+                objectPosition: "center center",
                 filter: "brightness(40%)",
               }}
-              alt={blogResources[index].title}
+              alt={heroContent[index].title}
             />
           )
         )}
 
-        <div className="h-screen w-screen absolute inset-0 bg-gradient-to-t from-teal-400 via-transparent to-transparent opacity-30" />
+        <div className="h-full w-full absolute inset-0 bg-gradient-to-t from-amber-400 via-transparent to-transparent opacity-30" />
 
         <div
-          className={`absolute inset-0 flex h-full items-end justify-start transition-opacity duration-500 ${
+          className={`absolute inset-0 flex flex-col justify-center items-center transition-opacity duration-500 ${
             isAnimating ? "opacity-0" : "opacity-100"
           }`}
         >
-          <div className="mb-10 text-white text-left max-w-5xl px-4">
-            <h3 className="font-semibold mb-4 backdrop-blur-2xl outline outline-1 outline-white  text-gray-100 w-fit px-5 py-2 rounded-full shadow-2xl hover:bg-black hover:text-black transition-all duration-300 hover:bg-black">
-              {blogResources[currentPostIndex].category}
-            </h3>
-            <h1 className="text-2xl font-bold">
-              {blogResources[currentPostIndex].title}
+          <div className="text-white text-center px-4 md:px-8 max-w-4xl mx-auto">
+            <div>
+              <h3 className="inline-block font-semibold mb-4 backdrop-blur-sm bg-white/10 text-gray-100 px-5 py-2 rounded-full shadow-2xl hover:bg-white/20 transition-all duration-300">
+                {heroContent[currentPostIndex].category}
+              </h3>
+            </div>
+
+            <h1 className="text-4xl md:text-6xl font-bold mb-4 leading-tight">
+              {heroContent[currentPostIndex].title}
             </h1>
-            <h2 className="text-gray-400 text-lg">
-              {blogResources[currentPostIndex].subtitle}
+
+            <h2 className="text-gray-300 text-xl md:text-2xl mb-8">
+              {heroContent[currentPostIndex].subtitle}
             </h2>
-            <div className="flex mt-4">
-              {blogResources.map((_, index) => (
+
+            <div className="flex justify-center gap-2">
+              {heroContent.map((_, index) => (
                 <Indicator
                   key={index}
                   isActive={index === currentPostIndex}
                   onClick={() => handleIndicatorClick(index)}
                 />
               ))}
-            </div>
-          </div>
-        </div>
-
-        <div
-          className={`absolute inset-0 flex h-full items-end justify-end transition-opacity duration-500 ${
-            isAnimating ? "opacity-0" : "opacity-100"
-          }`}
-        >
-          <div className="mb-10 text-white max-w-5xl px-4">
-            <div className="flex gap-5 items-center">
-              <img
-                src={blogResources[currentPostIndex].profileImage}
-                alt={blogResources[currentPostIndex].profileName}
-                className="w-8 h-8 rounded-full object-cover shadow-md"
-              />
-              <h2 className="font-semibold text-xl">
-                {blogResources[currentPostIndex].profileName}
-              </h2>
-            </div>
-            <div className="flex gap-5 justify-end">
-              <h3>{blogResources[currentPostIndex].date}</h3>
-            
             </div>
           </div>
         </div>

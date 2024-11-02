@@ -84,7 +84,7 @@ const PrediksiTanaman = () => {
     - Lokasi Lahan: ${data.lokasiLahan}
     - Tanggal Tanam: ${data.tanggalTanam}
 
-Berikan perkiraan hasil panen dan waktu yang diperlukan sampai panen, serta kondisi ideal lainnya untuk jenis tanaman yang dipilih. Jika inputan tidak masuk akal atau data kurang lengkap, jawab: data tersebut tidak masuk akal atau data kurang lengkap."
+Berikan perkiraan hasil panen dan waktu yang diperlukan sampai panen, serta kondisi ideal lainnya untuk jenis tanaman yang dipilih. Tolong dalam bahasa Indonesia, dan kemudian mainkan asumsi saja tidak 100% akurat tidak masalah, Jika inputan tidak masuk akal atau data kurang lengkap, jawab: data tersebut tidak masuk akal atau data kurang lengkap."
 `;
   };
 
@@ -118,7 +118,7 @@ Berikan perkiraan hasil panen dan waktu yang diperlukan sampai panen, serta kond
     }
   };
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
-  const [activeNav, setActiveNav] = useState("Pemantauan Tanaman");
+  const [activeNav, setActiveNav] = useState("Manajemen Lahan");
 
   const navigationItems = [
     { name: "Dashboard", icon: NotebookIcon },
@@ -207,7 +207,7 @@ Berikan perkiraan hasil panen dan waktu yang diperlukan sampai panen, serta kond
 
     return (
       <>
-        <div className="col-span-12 md:col-span-3 text-black">
+        <div className="h-fit shadow-md rounded-lg col-span-12 md:col-span-3 text-black">
           <form
             onSubmit={handleCoordinatesSubmit}
             className="space-y-3 rounded-t-xl bg-gradient-to-tr from-blue-800 to-blue-900 p-4"
@@ -304,7 +304,10 @@ Berikan perkiraan hasil panen dan waktu yang diperlukan sampai panen, serta kond
                     <span>{item.name}</span>
                   </div>
                 ))}
-                <button onClick={logout} className="flex items-center space-x-2 p-3 text-gray-500 hover:bg-red-50 hover:text-red-500 rounded-lg cursor-pointer transition-all duration-200">
+                <button
+                  onClick={logout}
+                  className="flex items-center space-x-2 p-3 text-gray-500 hover:bg-red-50 hover:text-red-500 rounded-lg cursor-pointer transition-all duration-200"
+                >
                   <LogOut size={20} />
                   <span>Log Out</span>
                 </button>
@@ -376,9 +379,6 @@ Berikan perkiraan hasil panen dan waktu yang diperlukan sampai panen, serta kond
               <div className="flex justify-between items-center mb-6 w-[32rem]">
                 <h2 className="text-2xl font-bold text-slate-900">
                   Manajemen Lahan
-                </h2>
-                <h2 className="hidden lg:block text-2xl font-bold text-slate-900">
-                  Output
                 </h2>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

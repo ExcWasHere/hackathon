@@ -30,17 +30,17 @@ const faqs = [
   {
     question: "Bagaimana cara memulai dengan TerraTopia?",
     answer:
-      "Untuk memulai, Anda cukup mendaftar akun di website kami dan ikuti panduan langkah demi langkah yang telah kami sediakan.",
+      "Untuk memulai, cukup mendaftar akun di website kami dan ikuti panduan langkah demi langkah yang telah kami sediakan untuk mengatur profil dan preferensi agrikultural Anda.",
   },
   {
-    question: "Berapa lama waktu pemrosesan pesanan?",
+    question: "Bagaimana cara kerja analisis data pertanian menggunakan AI?",
     answer:
-      "Pemrosesan pesanan biasanya memakan waktu 1-2 hari kerja sebelum pengiriman dilakukan.",
+      "TerraTopia mengumpulkan data dari berbagai sumber, seperti sensor lapangan dan citra satelit, kemudian menganalisisnya menggunakan algoritma AI untuk memberikan wawasan dan rekomendasi bagi peningkatan hasil pertanian.",
   },
   {
-    question: "Apakah ada garansi produk?",
+    question: "Apakah platform ini mendukung keberlanjutan pertanian?",
     answer:
-      "Ya, semua produk kami memiliki garansi 30 hari untuk memberikan Anda ketenangan pikiran dalam berbelanja.",
+      "Ya, TerraTopia dirancang untuk mendukung pertanian berkelanjutan dengan memberikan rekomendasi yang membantu mengurangi penggunaan sumber daya dan meningkatkan efisiensi produksi.",
   },
 ];
 
@@ -50,7 +50,7 @@ export default function SupportMain() {
       <div className="container mx-auto px-4 py-24 max-w-7xl">
         <div className="flex flex-col lg:flex-row justify-between gap-12 mb-20">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-800 leading-tight max-w-xl tracking-tight">
-            Pusat Bantuan <span className="text-emerald-600">TerraTopia</span>
+            Pusat Bantuan <span className="text-amber-600">TerraTopia</span>
           </h1>
           <p className="max-w-2xl text-xl md:text-2xl text-gray-600 leading-relaxed font-light italic">
             Temukan jawaban atas pertanyaan Anda dan pelajari cara
@@ -67,7 +67,7 @@ export default function SupportMain() {
                 className="category-item transform transition-all duration-300 hover:translate-x-2"
               >
                 <div className="flex items-center gap-4 mb-3">
-                  <span className="flex items-center justify-center w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 font-semibold">
+                  <span className="flex items-center justify-center w-8 h-8 rounded-full bg-amber-100 text-amber-600 font-semibold">
                     {category.icon}
                   </span>
                   <h2 className="text-xl md:text-2xl font-bold text-gray-800 tracking-tight">
@@ -83,8 +83,8 @@ export default function SupportMain() {
 
           <div className="group ">
             <div className="relative w-fit h-fit">
-              <div className="absolute inset-0 bg-emerald-200 rounded-xl transform rotate-3"></div>
-              <div className="absolute z-10 inset-0 bg-gradient-to-t from-green-600 via-transparent to-transparent rounded-xl group-hover:rotate-2 group-hover:scale-[1.02] group-hover:shadow-2xl transition-all duration-300"></div>
+              <div className="absolute inset-0 bg-amber-200 rounded-xl transform rotate-3"></div>
+              <div className="absolute z-10 inset-0 bg-gradient-to-t from-amber-600 via-transparent to-transparent rounded-xl group-hover:rotate-2 group-hover:scale-[1.02] group-hover:shadow-2xl transition-all duration-300"></div>
 
               <img
                 src="/support/help-center.jpg"
