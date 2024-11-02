@@ -11,12 +11,20 @@ const Header: React.FC<HeaderProps> = () => {
   const currentPage = useLocation();
 
   useEffect(() => {
-    if (currentPage.pathname === "/categories") {
+    if (
+      currentPage.pathname === "/categories" ||
+      currentPage.pathname === "/dashboard" ||
+      currentPage.pathname === "/support"
+    ) {
       setIsScrolled(true);
     } else {
       const handleScroll = () => {
         const scrollPosition = window.scrollY;
-        setIsScrolled(scrollPosition >= window.innerHeight * 0.85);
+        if (currentPage.pathname === "/about-us") {
+          setIsScrolled(scrollPosition >= window.innerHeight * 0.4);
+        } else {
+          setIsScrolled(scrollPosition >= window.innerHeight * 0.85);
+        }
       };
 
       window.addEventListener("scroll", handleScroll);
@@ -40,7 +48,7 @@ const Header: React.FC<HeaderProps> = () => {
       </div>
       <nav>
         <ul className="flex gap-7 font-semibold">
-          {["Home", "About Us", "Contact Us"].map((item) => (
+          {["Home", "About Us", "Support"].map((item) => (
             <li key={item}>
               <a
                 href={`${
@@ -56,19 +64,19 @@ const Header: React.FC<HeaderProps> = () => {
           ))}
         </ul>
       </nav>
-    
+
       <div className="flex items-center">
         <div className="ml-7 flex gap-4 items-center">
           <h1>
             <a
-              href="/"
+              href="/login"
               className="hover:text-emerald-400 transition-colors duration-200"
             >
               Login
             </a>
           </h1>
-          <h1 className="cursor-pointer text-black bg-white px-6 py-2 rounded-xl shadow-md hover:bg-emerald-400 hover:text-white transition-all duration-200">
-            <a href="/">Sign Up</a>
+          <h1 className="cursor-pointer text-black bg-emerald-400 px-6 py-2 rounded-xl shadow-md hover:bg-emerald-400 hover:text-white transition-all duration-200">
+            <a href="/register">Sign Up</a>
           </h1>
         </div>
       </div>

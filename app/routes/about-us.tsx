@@ -1,28 +1,27 @@
-import type { MetaFunction } from "@remix-run/node";
+import { MetaFunction } from "@remix-run/react";
+import Footer from "~/common/footer";
+import Header from "~/common/header";
+import AboutUsContact from "~/components/about-us/contact";
+import AboutUsForeword from "~/components/about-us/foreword";
+import AboutUsHero from "~/components/about-us/hero";
+import AboutUsTeam from "~/components/about-us/team";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "New Remix App" },
-    { name: "description", content: "Welcome to Remix!" },
+    { title: "About Us | TerraTopia" },
+    { name: "description", content: "" },
   ];
 };
 
 export default function AboutUsPage() {
   return (
-    <>
-      <section className="h-screen container mx-auto text-center">
-        <div className="text-5xl font-bold mb-4">
-          <h2>TerraTopia</h2>
-
-          <p className="text-lg mb-8">
-            TerraTopia adalah asisten pertanian lengkap. Kami memanfaatkan
-            teknologi AI mutakhir untuk membantu Anda mengelola pertanian,
-            mengoptimalkan performa tanaman, dan selalu mengikuti tren pasar.
-          </p>
-
-        <img src="" alt="" />
-        </div>
-      </section>
-    </>
+    <div className="bg-black">
+      <Header />
+      <AboutUsHero />
+      <AboutUsForeword />
+      <AboutUsTeam />
+      <AboutUsContact />
+      <Footer />
+    </div>
   );
 }
