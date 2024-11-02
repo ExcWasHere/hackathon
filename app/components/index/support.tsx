@@ -45,8 +45,8 @@ export default function IndexSupport() {
             />
           </div>
 
-          <div className="lg:w-1/2 space-y-12">
-            <div className="space-y-6">
+          <div className="lg:w-1/2 space-y-28">
+            <div className="space-y-8">
               <h1 className="text-4xl lg:text-6xl font-light text-gray-50 leading-tight tracking-tight">
                 Kami peduli pada pertanian Anda,{" "}
                 <span className="font-semibold mt-2 inline-flex">
