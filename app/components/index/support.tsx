@@ -33,7 +33,7 @@ const accordionList: AccordionProps[] = [
 
 export default function IndexSupport() {
   return (
-    <div className="h-[170vh] bg-gradient-to-br from-amber-700 to-amber-800">
+    <div className="h-auto md:h-[170vh] bg-gradient-to-br from-amber-700 to-amber-800 py-16">
       <div className="w-[90vw] mx-auto px-6 lg:px-8 h-full items-center">
         <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-between h-full gap-16">
           <div className="lg:w-1/2 h-full relative hidden lg:block">
@@ -45,16 +45,16 @@ export default function IndexSupport() {
             />
           </div>
 
-          <div className="lg:w-1/2 space-y-28">
+          <div className="lg:w-1/2 space-y-16 md:space-y-28">
             <div className="space-y-8">
-              <h1 className="text-4xl lg:text-6xl font-light text-gray-50 leading-tight tracking-tight">
+              <h1 className="text-3xl md:text-4xl lg:text-6xl font-light text-gray-50 leading-tight tracking-tight">
                 Kami peduli pada pertanian Anda,{" "}
                 <span className="font-semibold mt-2 inline-flex">
                   kami mendukung dengan hati <GiPlantWatering />
                 </span>
               </h1>
 
-              <p className="text-lg text-gray-300 leading-relaxed tracking-wide">
+              <p className="text-base md:text-lg text-gray-300 leading-relaxed tracking-wide">
                 <span className="text-amber-200 font-medium">TerraTopia</span>{" "}
                 adalah pusat layanan pertanian modern yang berkomitmen untuk
                 memberikan pengalaman yang nyaman, terjangkau, dan berkualitas
@@ -75,11 +75,11 @@ export default function IndexSupport() {
                                 hover:bg-amber-100/20"
                   >
                     <div className="space-y-2">
-                      <h2 className="inline-flex items-center gap-2 text-xl font-medium text-amber-100 tracking-wide">
+                      <h2 className="inline-flex items-center gap-2 text-lg md:text-xl font-medium text-amber-100 tracking-wide">
                         {list.icon}
                         {list.title}
                       </h2>
-                      <p className="text-gray-300 leading-relaxed">
+                      <p className="text-sm md:text-base text-gray-300 leading-relaxed">
                         {list.subtitle}
                       </p>
                     </div>
