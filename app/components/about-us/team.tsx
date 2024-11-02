@@ -14,7 +14,7 @@ const profileList = [
     image: "/about-us/profile/farrel.jpg",
   },
   {
-    id: 2,
+    id: 3,
     name: "Excell Christian",
     job: "Frontend Developer and Designer",
     image: "/about-us/profile/excell.jpg",
@@ -27,12 +27,12 @@ export default function AboutUsTeam(): JSX.Element {
       <div className="w-[80vw] mx-auto py-16 flex flex-col md:flex-row justify-between items-center">
         <div className="text-center md:text-left">
           <h1 className="text-4xl md:text-6xl font-semibold">
-            Meet Our <br />
-            <span className="text-amber-600">Amazing Team</span>
+            Temui Tim <br />
+            <span className="text-amber-600">Hebat Kami</span>
           </h1>
-          <p className="mt-2 text-lg md:text-xl font-light max-w-xl">
-            Unleashing Potential, Driving Transformation: Empowering Minds to
-            Innovate, Inspire, and Lead the Future.
+          <p className="mt-2 text-lg md:text-lg font-light max-w-xl">
+            Melepaskan Potensi, Menggerakkan Transformasi: Memberdayakan Pikiran
+            untuk Inovasi, Menginspirasi, dan Memimpin Masa Depan.
           </p>
         </div>
         <div className="relative mt-8 md:mt-0">
@@ -73,17 +73,19 @@ export default function AboutUsTeam(): JSX.Element {
 
       <div className="w-[80vw] mx-auto flex flex-col md:flex-row justify-between items-center">
         <h1 className="font-semibold text-4xl md:text-6xl text-center md:text-left mb-8 md:mb-0">
-          Join our team
+          Bergabunglah dengan <br />
+          tim kami
         </h1>
         <div className="text-center md:text-left">
           <p className="max-w-xl font-light mb-8 md:mb-0">
-            We believe it takes great people to make a great product. That's why
-            we hire not only the perfect professional fits, but people who
-            embody our company values.
+            Kami percaya bahwa dibutuhkan orang-orang hebat untuk membuat produk
+            hebat. Itulah mengapa kami tidak hanya merekrut profesional yang
+            sempurna, tetapi orang-orang yang menghayati nilai-nilai perusahaan
+            kami.
           </p>
           <div className="flex mt-8 md:mt-0 items-center justify-center md:justify-start text-amber-800">
             <button className="text-black underline font-semibold">
-              See open options
+              Lihat opsi terbuka
             </button>
             <BiChevronRight />
           </div>

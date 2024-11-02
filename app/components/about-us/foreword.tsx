@@ -16,7 +16,7 @@ export default function TentangKamiPendahuluan(): JSX.Element {
 
   return (
     <div className="min-h-screen bg-white text-black">
-      <div className="pt-12 flex flex-col md:flex-row h-full py-20 max-w-7xl mx-auto my-auto justify-between px-4">
+      <div className="relative pt-12 flex flex-col md:flex-row h-full py-20 max-w-7xl mx-auto my-auto justify-between px-4">
         <h1 className="text-black font-semibold text-4xl md:text-6xl max-w-2xl mb-8 md:mb-0">
           Bersama kita <br /> semakin{" "}
           <span className="text-amber-600">kuat.</span>
@@ -61,7 +61,7 @@ export default function TentangKamiPendahuluan(): JSX.Element {
           </div>
         </div>
         <div>
-          <h1 className="max-w-3xl font-bold text-4xl md:text-6xl">
+          <h1 className="max-w-3xl font-bold text-4xl md:text-5xl">
             “Tujuan kami adalah mengolah setiap lahan menuju kelimpahan,
             menyediakan ruang di mana pertumbuhan dan{" "}
             <span className="text-amber-600">nutrisi</span> berkembang,

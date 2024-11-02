@@ -41,7 +41,7 @@ export default function IndexSupport() {
             <img
               src="/index/support.jpg"
               alt="Gambar Dukungan"
-              className="hidden md:block h-full w-full object-cover shadow-2xl"
+              className="hidden md:block h-full w-full object-cover shadow-2xl rounded-md"
             />
           </div>
 
