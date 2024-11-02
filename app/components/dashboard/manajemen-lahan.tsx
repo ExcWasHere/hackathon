@@ -23,13 +23,13 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "@remix-run/react";
 
-const DashboardMainPage = () => {
+const PrediksiTanaman = () => {
   const [name, setName] = useState("");
   const [token, setToken] = useState("");
   const [expire, setExpire] = useState("");
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
-      
+
   const logout = async () => {
     try {
       await axios.delete("http://localhost:5000/logout", {
@@ -70,24 +70,22 @@ const DashboardMainPage = () => {
   };
 
   const [formData, setFormData] = useState({
-    landArea: "",
-    pH: "",
-    temperature: "",
-    soilType: "",
+    jenisTanaman: "",
+    lokasiLahan: "",
+    tanggalTanam: "",
   });
   const [recommendation, setRecommendation] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   // Predefined prompt template
   const generatePrompt = (data: any) => {
-    return `Berdasarkan data berikut:
-    - Luas lahan: ${data.landArea} hektar
-    - Suhu rata-rata: ${data.temperature}°C
-    - Jenis tanah (1=Humus, 2=Lempung, 3=Pasir): Tipe ${data.soilType}
-    - pH tanah: ${data.pH}
+    return `"Berdasarkan data berikut:
+    - Jenis Tanaman: ${data.jenisTanaman}
+    - Lokasi Lahan: ${data.lokasiLahan}
+    - Tanggal Tanam: ${data.tanggalTanam}
 
-    
-    Berikan rekomendasi tanaman yang cocok untuk ditanam tanpa jelaskan. Berikan 3 saja, jika inputan tidak masuk akal maka jawab: data tersebut tidak masuk akal`;
+Berikan perkiraan hasil panen dan waktu yang diperlukan sampai panen, serta kondisi ideal lainnya untuk jenis tanaman yang dipilih. Jika inputan tidak masuk akal atau data kurang lengkap, jawab: data tersebut tidak masuk akal atau data kurang lengkap."
+`;
   };
 
   const handleInputChange = (e: any) => {
@@ -100,7 +98,11 @@ const DashboardMainPage = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (!formData.landArea || !formData.temperature || !formData.soilType)
+    if (
+      !formData.jenisTanaman ||
+      !formData.lokasiLahan ||
+      !formData.tanggalTanam
+    )
       return;
 
     setIsLoading(true);
@@ -116,7 +118,7 @@ const DashboardMainPage = () => {
     }
   };
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
-  const [activeNav, setActiveNav] = useState("Manajemen Lahan");
+  const [activeNav, setActiveNav] = useState("Pemantauan Tanaman");
 
   const navigationItems = [
     { name: "Dashboard", icon: NotebookIcon },
@@ -158,7 +160,7 @@ const DashboardMainPage = () => {
       lon: defaultLon,
     });
 
-    const handleCoordinatesSubmit = (e) => {
+    const handleCoordinatesSubmit = (e: any) => {
       e.preventDefault();
       setCoordinates(tempCoordinates);
     };
@@ -203,11 +205,9 @@ const DashboardMainPage = () => {
       fetchWeather();
     }, [coordinates]);
 
-
-
     return (
       <>
-        <div className="mt-16 col-span-12 md:col-span-3 text-black">
+        <div className="col-span-12 md:col-span-3 text-black">
           <form
             onSubmit={handleCoordinatesSubmit}
             className="space-y-3 rounded-t-xl bg-gradient-to-tr from-blue-800 to-blue-900 p-4"
@@ -274,7 +274,7 @@ const DashboardMainPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-green-300 p-2">
+    <div className="min-h-screen bg-blue-950 p-2">
       <div className="bg-white/100  rounded-3xl p-6 mx-auto ">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
           {/* Sidebar */}
@@ -403,17 +403,17 @@ const DashboardMainPage = () => {
                       <div className="space-y-4">
                         <div>
                           <label className="block text-gray-600 mb-2 bg">
-                            Luas Lahan (Hektar)
+                            Jenis Tanaman
                           </label>
                           <input
-                            type="number"
-                            name="landArea"
-                            value={formData.landArea}
+                            type="text"
+                            name="jenisTanaman"
+                            value={formData.jenisTanaman}
                             onChange={handleInputChange}
                             className="w-full px-6 py-2 rounded-2xl bg-gray-100 text-black placeholder-gray-400 focus:outline-none focus:ring-2
                            focus:ring-indigo-500 focus:border-transparent transition-all duration-200
                            shadow-lg backdrop-blur-sm"
-                            placeholder="Masukkan luas lahan..."
+                            placeholder="Masukkan jenis tanaman"
                             step="0.1"
                             min="0"
                           />
@@ -421,19 +421,20 @@ const DashboardMainPage = () => {
 
                         <div>
                           <label className="block text-gray-600 mb-2">
-                            Potential of Hydrogen (pH)
+                            Lokasi Lahan
                           </label>
-                          <input
-                            type="number"
-                            name="pH"
-                            value={formData.pH}
+                          <select
+                            name="lokasiLahan"
+                            value={formData.lokasiLahan}
                             onChange={handleInputChange}
                             className="w-full px-6 py-2 rounded-2xl bg-gray-100 text-black placeholder-gray-400 focus:outline-none focus:ring-2
                            focus:ring-indigo-500 focus:border-transparent transition-all duration-200
                            shadow-lg backdrop-blur-sm"
-                            placeholder="Masukkan suhu rata-rata..."
-                            step="0.1"
-                          />
+                          >
+                            <option value="">Pilih lokasi lahan...</option>
+                            <option value="1">Dataran Tinggi</option>
+                            <option value="2">Dataran Rendah</option>
+                          </select>
                         </div>
 
                         <div>
@@ -441,35 +442,16 @@ const DashboardMainPage = () => {
                             Suhu Rata-rata (°C)
                           </label>
                           <input
-                            type="number"
-                            name="temperature"
-                            value={formData.temperature}
+                            type="date"
+                            name="tanggalTanam"
+                            value={formData.tanggalTanam}
                             onChange={handleInputChange}
                             className="w-full px-6 py-2 rounded-2xl bg-gray-100 text-black placeholder-gray-400 focus:outline-none focus:ring-2
                            focus:ring-indigo-500 focus:border-transparent transition-all duration-200
                            shadow-lg backdrop-blur-sm"
-                            placeholder="Masukkan suhu rata-rata..."
+                            placeholder="Masukkan tanggal tanam"
                             step="0.1"
                           />
-                        </div>
-
-                        <div>
-                          <label className="block text-gray-600 mb-2">
-                            Tipe Tanah
-                          </label>
-                          <select
-                            name="soilType"
-                            value={formData.soilType}
-                            onChange={handleInputChange}
-                            className="w-full px-6 py-2 rounded-2xl bg-gray-100 text-black placeholder-gray-400 focus:outline-none focus:ring-2
-                           focus:ring-indigo-500 focus:border-transparent transition-all duration-200
-                           shadow-lg backdrop-blur-sm"
-                          >
-                            <option value="">Pilih tipe tanah...</option>
-                            <option value="1">Humus</option>
-                            <option value="2">Lempung</option>
-                            <option value="3">Pasir</option>
-                          </select>
                         </div>
                       </div>
 
@@ -480,9 +462,9 @@ const DashboardMainPage = () => {
                        disabled:cursor-not-allowed font-semibold"
                         disabled={
                           isLoading ||
-                          !formData.landArea ||
-                          !formData.temperature ||
-                          !formData.soilType
+                          !formData.jenisTanaman ||
+                          !formData.lokasiLahan ||
+                          !formData.tanggalTanam
                         }
                       >
                         {isLoading ? "Memproses..." : "Dapatkan Rekomendasi"}
@@ -558,4 +540,4 @@ const DashboardMainPage = () => {
   );
 };
 
-export default DashboardMainPage;
+export default PrediksiTanaman;
