@@ -48,7 +48,11 @@ const Header: React.FC<HeaderProps> = () => {
       </div>
       <nav>
         <ul className="flex gap-7 font-semibold">
+<<<<<<< HEAD
           {["Home", "About Us", "Support"].map((item) => (
+=======
+          {["Home", "About Us", "Contact Us", "Dashboard"].map((item) => (
+>>>>>>> 24ff774e4a061e34d9724ea892cb0468598c735f
             <li key={item}>
               <a
                 href={`${
