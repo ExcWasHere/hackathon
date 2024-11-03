@@ -12,13 +12,13 @@ const Header: React.FC<HeaderProps> = () => {
   useEffect(() => {
     if (
       currentPage.pathname === "/categories" ||
-      currentPage.pathname === "/dashboard"
+      currentPage.pathname === "/dashboard" 
     ) {
       setIsScrolled(true);
     } else {
       const handleScroll = () => {
         const scrollPosition = window.scrollY;
-        if (currentPage.pathname === "/about-us" || currentPage.pathname === "/support") {
+        if (currentPage.pathname === "/about-us" || currentPage.pathname === "/support" ) {
           setIsScrolled(scrollPosition >= window.innerHeight * 0.4);
         } else {
           setIsScrolled(scrollPosition >= window.innerHeight * 0.85);

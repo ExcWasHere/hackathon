@@ -10,10 +10,10 @@ export default function AboutUsContact(): JSX.Element {
           className="object-cover h-full w-full"
         />
       </div>
-      <div className="absolute inset-0 bg-gradient-to-r from-black via-black to-transparent"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-amber-50 via-amber-50 to-transparent"></div>
       <main className="relative z-10 flex flex-col md:flex-row w-[90vw] mx-auto py-8 items-center justify-between h-full text-center md:text-left">
-        <div className="flex flex-col max-w-xl space-y-10">
-          <h1 className="text-4xl md:text-6xl font-semibold leading-snug">
+        <div className="flex flex-col max-w-xl space-y-10 text-black">
+          <h1 className="text-4xl md:text-6xl font-semibold leading-snug ">
             Have a <span className="text-amber-600">question?</span> Our team is
             happy to assist you
           </h1>

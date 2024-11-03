@@ -15,20 +15,62 @@ import {
   TrendingUp,
   Calendar,
   ThermometerSun,
+  Menu,
+  SettingsIcon,
+  AlertCircle,
 } from "lucide-react";
 
 import { requestToAI } from "~/utils/groq";
 import { BsCpu } from "react-icons/bs";
 import axios from "axios";
-import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "@remix-run/react";
+import BusinessNews from "~/utils/dashboard/news";
+import { jwtDecode } from "jwt-decode";
 
-const PrediksiTanaman = () => {
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import { Line } from "react-chartjs-2";
+import { Groq } from "groq-sdk";
+import { Plant, TrendingUp } from "lucide-react";
+
+// Register ChartJS components
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
+
+const GROQ_API = import.meta.env.VITE_GROQ_API_KEY;
+
+const groq = new Groq({
+  apiKey: "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",
+  dangerouslyAllowBrowser: true,
+});
+
+interface PlantGrowthData {
+  day: number;
+  height: number;
+  development: number;
+}
+const DashboardManajemenLahan = () => {
   const [name, setName] = useState("");
   const [token, setToken] = useState("");
   const [expire, setExpire] = useState("");
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const logout = async () => {
     try {
@@ -40,10 +82,6 @@ const PrediksiTanaman = () => {
       console.error(error);
     }
   };
-
-  useEffect(() => {
-    refreshToken();
-  }, []);
 
   const refreshToken = async () => {
     try {
@@ -60,6 +98,10 @@ const PrediksiTanaman = () => {
     }
   };
 
+  useEffect(() => {
+    refreshToken();
+  }, []);
+
   const getUsers = async () => {
     const response: any = await axios.get("http://localhost:5000/users", {
       headers: {
@@ -71,17 +113,154 @@ const PrediksiTanaman = () => {
 
   const [formData, setFormData] = useState({
     jenisTanaman: "",
-    lokasiLahan: "",
     tanggalTanam: "",
   });
   const [recommendation, setRecommendation] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  const [growthData, setGrowthData] = useState<PlantGrowthData[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [analysis, setAnalysis] = useState<string>("");
+
+  const processAIResponse = (response: string) => {
+    try {
+      const jsonMatch = response.match(/\[.*\]/s);
+      if (!jsonMatch) {
+        throw new Error("No JSON data found in response");
+      }
+
+      const jsonData = JSON.parse(jsonMatch[0]);
+      return {
+        growthData: jsonData,
+        analysis: response.replace(jsonMatch[0], "").trim(),
+      };
+    } catch (err) {
+      console.error("Error processing AI response:", err);
+      console.log("Raw response:", response);
+      throw err;
+    }
+  };
+
+  const analyzePlantGrowth = async () => {
+    if (!formData.jenisTanaman || !formData.tanggalTanam) {
+      setError("Mohon lengkapi semua field");
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      const prompt = `Analyze plant growth projection for 90 days with these parameters:
+      - Plant name: ${formData.jenisTanaman} m²
+      - Planted From: ${formData.tanggalTanam}
+
+      Provide a brief analysis and generate a JSON array of growth data points (every 15 days) with this format:
+      Here's the growth analysis:
+      [analysis text]
+
+      [
+        {"day": 0, "height": 0, "development": 0},
+        {"day": 15, "height": 10, "development": 20},
+        ...etc for 90 days
+      ]
+      
+      Height should be in cm, development in percentage (0-100).
+      Consider soil type and conditions for realistic growth patterns.`;
+
+      const reply = await groq.chat.completions.create({
+        messages: [
+          {
+            role: "system",
+            content:
+              "You are an agricultural expert. Analyze plant growth patterns based on given parameters.",
+          },
+          {
+            role: "user",
+            content: prompt,
+          },
+        ],
+        model: "llama3-70b-8192",
+        temperature: 0.5,
+      });
+
+      const aiResponse = reply.choices[0].message.content;
+      if (aiResponse) {
+        const { growthData, analysis } = processAIResponse(aiResponse);
+        setGrowthData(growthData);
+        setAnalysis(analysis);
+      }
+    } catch (err) {
+      console.error("Error analyzing growth:", err);
+      setError("Gagal menganalisis pertumbuhan. Silakan coba lagi.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Chart.js configuration
+  const chartOptions = {
+    responsive: true,
+    interaction: {
+      mode: "index" as const,
+      intersect: false,
+    },
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: "Hari",
+        },
+      },
+      y1: {
+        type: "linear" as const,
+        display: true,
+        position: "left" as const,
+        title: {
+          display: true,
+          text: "Tinggi (cm)",
+        },
+      },
+      y2: {
+        type: "linear" as const,
+        display: true,
+        position: "right" as const,
+        title: {
+          display: true,
+          text: "Perkembangan (%)",
+        },
+        grid: {
+          drawOnChartArea: false,
+        },
+      },
+    },
+  };
+
+  const chartData = {
+    labels: growthData.map((data) => data.day),
+    datasets: [
+      {
+        label: "Tinggi Tanaman",
+        data: growthData.map((data) => data.height),
+        borderColor: "#d97706",
+        backgroundColor: "#d97706",
+        yAxisID: "y1",
+      },
+      {
+        label: "Perkembangan",
+        data: growthData.map((data) => data.development),
+        borderColor: "#15803d",
+        backgroundColor: "#15803d",
+        yAxisID: "y2",
+      },
+    ],
+  };
+
   // Predefined prompt template
   const generatePrompt = (data: any) => {
     return `"Berdasarkan data berikut:
     - Jenis Tanaman: ${data.jenisTanaman}
-    - Lokasi Lahan: ${data.lokasiLahan}
     - Tanggal Tanam: ${data.tanggalTanam}
 
 Berikan perkiraan hasil panen dan waktu yang diperlukan sampai panen, serta kondisi ideal lainnya untuk jenis tanaman yang dipilih. Tolong dalam bahasa Indonesia, dan kemudian mainkan asumsi saja tidak 100% akurat tidak masalah, Jika inputan tidak masuk akal atau data kurang lengkap, jawab: data tersebut tidak masuk akal atau data kurang lengkap."
@@ -98,12 +277,7 @@ Berikan perkiraan hasil panen dan waktu yang diperlukan sampai panen, serta kond
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (
-      !formData.jenisTanaman ||
-      !formData.lokasiLahan ||
-      !formData.tanggalTanam
-    )
-      return;
+    if (!formData.jenisTanaman || !formData.tanggalTanam) return;
 
     setIsLoading(true);
     try {
@@ -121,8 +295,10 @@ Berikan perkiraan hasil panen dan waktu yang diperlukan sampai panen, serta kond
   const [activeNav, setActiveNav] = useState("Manajemen Lahan");
 
   const navigationItems = [
-    { name: "Dashboard", icon: NotebookIcon },
-    { name: "Manajemen Lahan", icon: Calendar },
+    { name: "Dashboard", icon: NotebookIcon, path: "/dashboard" },
+    { name: "Manajemen Lahan", icon: Calendar, path: "/manajemen-lahan" },
+    { name: "Peringatan Dini", icon: AlertCircle, path: "/peringatan-dini" },
+    { name: "Settings", icon: SettingsIcon, path: "/settings" },
   ];
 
   const getWeatherIcon = (condition: any) => {
@@ -132,7 +308,7 @@ Berikan perkiraan hasil panen dan waktu yang diperlukan sampai panen, serta kond
       case "clouds":
         return <Cloud className="w-5 h-5 text-gray-400" />;
       case "rain":
-        return <CloudRain className="w-5 h-5 text-blue-400" />;
+        return <CloudRain className="w-5 h-5 text-amber-400" />;
       default:
         return <Cloud className="w-5 h-5 text-gray-400" />; // Default to Cloud if unknown
     }
@@ -207,12 +383,15 @@ Berikan perkiraan hasil panen dan waktu yang diperlukan sampai panen, serta kond
 
     return (
       <>
-        <div className="h-fit shadow-md rounded-lg col-span-12 md:col-span-3 text-black">
+        <div className="mt-12 mr-7 col-span-12 md:col-span-3 shadow-lg h-fit rounded-lg p-5 text-black">
           <form
             onSubmit={handleCoordinatesSubmit}
-            className="space-y-3 rounded-t-xl bg-gradient-to-tr from-blue-800 to-blue-900 p-4"
+            className="space-y-3 rounded-t-xl bg-whitep-4"
           >
-            <label className="text-white py-2 text-xl text-gray-600">
+            <h1 className="text-amber-800 text-2xl font-semibold">
+              Prakiraan Cuaca
+            </h1>
+            <label className="py-2 text-lg text-gray-600">
               Masukkan Koordinat Lokasi Anda
             </label>
             <input
@@ -222,7 +401,7 @@ Berikan perkiraan hasil panen dan waktu yang diperlukan sampai panen, serta kond
                 setTempCoordinates((prev) => ({ ...prev, lat: e.target.value }))
               }
               placeholder="Enter latitude"
-              className="w-full p-2 rounded-lg bg-white"
+              className="w-full p-2 rounded-lg bg-white border-2"
             />
             <input
               type="text"
@@ -231,29 +410,29 @@ Berikan perkiraan hasil panen dan waktu yang diperlukan sampai panen, serta kond
                 setTempCoordinates((prev) => ({ ...prev, lon: e.target.value }))
               }
               placeholder="Enter longitude"
-              className="w-full p-2 border rounded-lg bg-white"
+              className="w-full p-2 border-2 rounded-lg bg-white"
             />
             <button
               type="submit"
-              className="w-full p-2 bg-blue-500 rounded-lg shadow-md text-white hover:bg-blue-600 transition-colors"
+              className="w-full p-2 bg-amber-400 rounded-lg shadow-md text-white hover:bg-amber-600 transition-colors"
             >
               Submit
             </button>
           </form>
-          <div className="bg-gradient-to-br from-blue-800 to-blue-900 text-white p-6 rounded-b-xl shadow-lg">
+          <div className=" bg-white text-black p-6 rounded-b-xl">
             <h2 className="text-xl font-bold mb-6 flex items-center">
               <Cloud className="w-5 h-5 mr-2" />
               Perkiraan Cuaca
             </h2>
-            <div className="text-sm text-gray-300 mb-4">7 hari kedepan</div>
-            <div className="space-y-4">
+            <div className="text-sm text-black mb-4">7 hari kedepan</div>
+            <div className="space-y-4 text-black">
               {loading ? (
                 <p>Loading...</p>
               ) : (
                 forecastData.map((forecast: any, index) => (
                   <div
                     key={index}
-                    className="flex items-center justify-between py-1 px-4 bg-white/10 rounded-lg"
+                    className="flex items-center justify-between bg-white py-1 px-4 border-2 rounded-lg"
                   >
                     <span className="text-sm font-medium">
                       {getDayName(index)}
@@ -274,270 +453,232 @@ Berikan perkiraan hasil panen dan waktu yang diperlukan sampai panen, serta kond
   }
 
   return (
-    <div className="min-h-screen bg-blue-950 p-2">
-      <div className="bg-white/100  rounded-3xl p-6 mx-auto ">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-          {/* Sidebar */}
-          <div className="col-span-12 md:col-span-2 mr-2">
-            <div className="space-y-6">
-              <div className="flex items-center space-x-2 p-3">
-                <h1 className="text-2xl font-extrabold text-slate-900">
-                  TERRATOPIA
-                </h1>
-              </div>
-              <nav className="space-y-4">
-                {navigationItems.map((item) => (
-                  <div
-                    key={item.name}
-                    onClick={() =>
-                      navigate(
-                        "/" + item.name.toLowerCase().replace(/\s+/g, "-")
-                      )
-                    }
-                    className={`flex items-center space-x-2 p-3 rounded-lg cursor-pointer transition-all duration-200 hover:bg-teal-50 ${
-                      activeNav === item.name
-                        ? "bg-teal-100 text-teal-600 font-medium"
-                        : "text-gray-500"
-                    }`}
+    <div className="min-h-screen bg-gradient-to-br from-amber-100 to-amber-200">
+      <div className="">
+        <div className="bg-white/80 backdrop-blur-lg overflow-hidden">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-8">
+            {/* Mobile Menu Button */}
+            <div className="md:hidden px-4 py-3 bg-white/95 border-b border-gray-100 flex items-center justify-between">
+              <h1 className="text-xl font-extrabold text-amber-600">
+                Terra<span className="text-amber-800">Topia</span>
+              </h1>
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="p-2 rounded-lg hover:bg-gray-100"
+              >
+                <Menu size={24} className="text-gray-600" />
+              </button>
+            </div>
+
+            {/* Sidebar */}
+            <div
+              className={`
+              col-span-12 md:col-span-2 bg-white/95 border-gray-100
+              ${isMobileMenuOpen ? "block" : "hidden"} md:block
+              fixed md:relative top-0 left-0 w-full md:w-auto h-full md:h-auto
+              z-50 md:z-auto
+            `}
+            >
+              <div className="p-4 sm:p-6 space-y-6 sm:space-y-8">
+                <div className="hidden md:flex items-center space-x-2">
+                  <h1 className="text-xl sm:text-2xl font-extrabold text-amber-600">
+                    Terra<span className="text-amber-800">Topia</span>
+                  </h1>
+                </div>
+                <nav className="space-y-2 sm:space-y-4">
+                  {navigationItems.map((item) => (
+                    <div
+                      key={item.name}
+                      onClick={() => {
+                        navigate(item.path);
+                        setActiveNav(item.name);
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className={`flex items-center space-x-3 p-2 sm:p-3 rounded-xl cursor-pointer transition-all duration-300 ${
+                        activeNav === item.name
+                          ? "bg-amber-500 text-white shadow-lg shadow-amber-200"
+                          : "text-gray-600 hover:bg-amber-50"
+                      }`}
+                    >
+                      <item.icon size={20} />
+                      <span className="font-medium">{item.name}</span>
+                    </div>
+                  ))}
+                  <button
+                    onClick={logout}
+                    className="flex items-center space-x-3 p-2 sm:p-3 text-red-500 hover:bg-red-50 rounded-xl cursor-pointer transition-all duration-300"
                   >
-                    <item.icon size={20} />
-                    <span>{item.name}</span>
-                  </div>
-                ))}
-                <button
-                  onClick={logout}
-                  className="flex items-center space-x-2 p-3 text-gray-500 hover:bg-red-50 hover:text-red-500 rounded-lg cursor-pointer transition-all duration-200"
-                >
-                  <LogOut size={20} />
-                  <span>Log Out</span>
-                </button>
-              </nav>
-            </div>
-          </div>
-
-          {/* Main Content */}
-          <div className="col-span-12 md:col-span-7">
-            {/* Header */}
-            <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-6 space-y-4 md:space-y-0">
-              <div className="relative">
-                {/* <input
-                  type="text"
-                  placeholder="Cari..."
-                  className="pl-10 pr-4 py-2 rounded-lg border bg-white bg-opacity-50 border-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-100 focus:border-transparent w-full"
-                />
-                <Search
-                  className="absolute left-3 top-2.5 text-gray-400"
-                  size={18}
-                /> */}
-              </div>
-              <div className="flex items-center space-x-4">
-                <button
-                  className="p-2 rounded-full hover:bg-gray-100 relative"
-                  onClick={() => setIsNotificationOpen(!isNotificationOpen)}
-                >
-                  <Bell size={20} className="text-gray-500" />
-                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-white text-xs flex items-center justify-center">
-                    3
-                  </span>
-                </button>
-                <div className="flex items-center space-x-2">
-                  <img
-                    src="nandhu-kumar-5NGTf4oD8RA-unsplash.jpg"
-                    className="w-10 h-10 rounded-full object-cover border-2 border-teal-500"
-                  />
-                  <div className="text-sm">
-                    <div className="font-medium text-slate-900">{name}</div>
-                    <div className="text-gray-500">Petani</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Trend Card */}
-            <div className="relative rounded-2xl overflow-hidden mb-8 group">
-              <img
-                src="/adrian-schledorn-31aJKD2f9xs-unsplash.jpg"
-                alt="Red Chilies"
-                className="w-full h-48 md:h-64 object-cover transition-transform duration-300 group-hover:scale-[1.01]"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
-                <div className="absolute bottom-0 left-0 p-6">
-                  <div className="flex items-center space-x-2 text-teal-400 mb-2">
-                    <TrendingUp size={20} />
-                    <span className="text-sm font-medium">Tren Terbaru</span>
-                  </div>
-                  <h2 className="text-2xl font-bold mb-2 text-white">
-                    Permintaan Cabai Merah Melonjak
-                  </h2>
-                  <p className="text-gray-200">di Pasar Lokal dan Ekspor</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Status Section */}
-            <div>
-              <div className="flex justify-between items-center mb-6 w-[32rem]">
-                <h2 className="text-2xl font-bold text-slate-900">
-                  Manajemen Lahan
-                </h2>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Needs to be fixed */}
-                <div className="bg-white p-6 rounded-xl shadow-md">
-                  <div className="max-w-4xl mx-auto space-y-6">
-                    <div className="text-start ">
-                      <h1 className="text-xl md:text-xl font-bold tracking-tight">
-                        <span className="text-gray-800">Rekomendasi</span>
-                        <span className="bg-gradient-to-r from-gray-600 to-gray-700 bg-clip-text text-transparent">
-                          {" "}
-                          Tanaman
-                        </span>
-                      </h1>
-                      <p className="text-base md:text-base text-gray-600 font-light">
-                        Masukkan data lahan Anda
-                      </p>
-                    </div>
-
-                    {/** Generate AI * */}
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                      <div className="space-y-4">
-                        <div>
-                          <label className="block text-gray-600 mb-2 bg">
-                            Jenis Tanaman
-                          </label>
-                          <input
-                            type="text"
-                            name="jenisTanaman"
-                            value={formData.jenisTanaman}
-                            onChange={handleInputChange}
-                            className="w-full px-6 py-2 rounded-2xl bg-gray-100 text-black placeholder-gray-400 focus:outline-none focus:ring-2
-                           focus:ring-indigo-500 focus:border-transparent transition-all duration-200
-                           shadow-lg backdrop-blur-sm"
-                            placeholder="Masukkan jenis tanaman"
-                            step="0.1"
-                            min="0"
-                          />
-                        </div>
-
-                        <div>
-                          <label className="block text-gray-600 mb-2">
-                            Lokasi Lahan
-                          </label>
-                          <select
-                            name="lokasiLahan"
-                            value={formData.lokasiLahan}
-                            onChange={handleInputChange}
-                            className="w-full px-6 py-2 rounded-2xl bg-gray-100 text-black placeholder-gray-400 focus:outline-none focus:ring-2
-                           focus:ring-indigo-500 focus:border-transparent transition-all duration-200
-                           shadow-lg backdrop-blur-sm"
-                          >
-                            <option value="">Pilih lokasi lahan...</option>
-                            <option value="1">Dataran Tinggi</option>
-                            <option value="2">Dataran Rendah</option>
-                          </select>
-                        </div>
-
-                        <div>
-                          <label className="block text-gray-600 mb-2">
-                            Suhu Rata-rata (°C)
-                          </label>
-                          <input
-                            type="date"
-                            name="tanggalTanam"
-                            value={formData.tanggalTanam}
-                            onChange={handleInputChange}
-                            className="w-full px-6 py-2 rounded-2xl bg-gray-100 text-black placeholder-gray-400 focus:outline-none focus:ring-2
-                           focus:ring-indigo-500 focus:border-transparent transition-all duration-200
-                           shadow-lg backdrop-blur-sm"
-                            placeholder="Masukkan tanggal tanam"
-                            step="0.1"
-                          />
-                        </div>
-                      </div>
-
-                      <button
-                        type="submit"
-                        className="w-full px-6 py-3 rounded-2xl bg-indigo-500 hover:bg-indigo-600
-                       text-white transition-colors duration-200 disabled:opacity-50
-                       disabled:cursor-not-allowed font-semibold"
-                        disabled={
-                          isLoading ||
-                          !formData.jenisTanaman ||
-                          !formData.lokasiLahan ||
-                          !formData.tanggalTanam
-                        }
-                      >
-                        {isLoading ? "Memproses..." : "Dapatkan Rekomendasi"}
-                      </button>
-                    </form>
-                  </div>
-                </div>
-
-                {/* Output prompt */}
-                <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
-                  {recommendation && (
-                    <div className="flex flex-col items-start space-y-4">
-                      <div className="flex items-center space-x-2 text-gray-600 px-4 py-2 ">
-                        <div className="px-2 py-2 border-2 rounded-lg">
-                          <BsCpu size={20} />
-                        </div>
-                        <h1 className="text-lg font-semibold">
-                          Rekomendasi Tanaman
-                        </h1>
-                      </div>
-                      <div
-                        className="mt-8 p-6 rounded-2xl  text-gray-600
-                           transition-all duration-300 ease-in-out w-full"
-                      >
-                        <div className="prose prose-invert max-w-none whitespace-pre-line">
-                          {recommendation}
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            {/* Enhanced NotebookIcon Monitoring */}
-            {/* <div className="mt-8">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold text-slate-900">
-                  Pemantauan Tanaman
-                </h2>
-              </div>
-              <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                    <span className="font-medium text-slate-900">
-                      Cabai Merah
-                    </span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <div className="h-2 w-24 bg-gray-200 rounded-full overflow-hidden">
-                      <div className="h-full w-[90%] bg-green-500 rounded-full"></div>
-                    </div>
-                    <span className="text-green-500 font-medium">90%</span>
-                  </div>
-                  <div className="text-slate-600">Pembentukan Buah</div>
-                  <div className="text-green-500 font-medium">
-                    Estimasi Panen: 3 Minggu (500Kg)
-                  </div>
-                  <button className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200">
-                    <ChevronRight size={20} className="text-gray-400" />
+                    <LogOut size={20} />
+                    <span className="font-medium">Log Out</span>
                   </button>
+                </nav>
+              </div>
+            </div>
+
+            {/* Main Content */}
+            <div className="col-span-12 md:col-span-7 p-4 sm:p-6">
+              {/* Header */}
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6 sm:mb-8">
+                <h1 className="text-2xl sm:text-3xl font-bold text-amber-800">
+                  Berita Terkini
+                </h1>
+                <div className="flex items-center justify-between sm:justify-end space-x-4 sm:space-x-6">
+                  <button className="p-2 rounded-full hover:bg-gray-100 relative transition-colors duration-300">
+                    <Bell size={20} className="text-gray-600" />
+                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-amber-500 rounded-full text-white text-xs flex items-center justify-center">
+                      3
+                    </span>
+                  </button>
+                  <div className="flex items-center space-x-3">
+                    <img
+                      src="nandhu-kumar-5NGTf4oD8RA-unsplash.jpg"
+                      className="w-8 sm:w-10 h-8 sm:h-10 rounded-full object-cover ring-2 ring-amber-500"
+                      alt="Profile"
+                    />
+                    <div>
+                      <div className="font-semibold text-amber-800">{name}</div>
+                      <div className="text-sm text-gray-500">Petani</div>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div> */}
-          </div>
 
-          {/* Weather Forecast */}
-          <WeatherForecast />
+              {/* News Section */}
+              <BusinessNews />
+
+              {/* Management Section */}
+              <div className="mt-8 sm:mt-12">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-8">
+                  <h2 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
+                    Manajemen Lahan
+                  </h2>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8">
+                  {/* Input Form */}
+                  <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-4 sm:p-8 transition-transform duration-300 hover:scale-[1.02]">
+                    <div className="max-w-4xl mx-auto space-y-4 sm:space-y-6">
+                      <div>
+                        <h1 className="text-xl sm:text-2xl font-bold">
+                          <span className="bg-gradient-to-r from-amber-600 to-amber-800 bg-clip-text text-transparent">
+                            Prediksi Panen
+                          </span>
+                        </h1>
+                        <p className="text-gray-500 mt-2">
+                          Masukkan data lahan Anda
+                        </p>
+                      </div>
+
+                      <form
+                        onSubmit={handleSubmit}
+                        className="space-y-4 sm:space-y-6 text-black"
+                      >
+                        <div className="space-y-4">
+                          <div>
+                            <label className="block text-gray-700 font-medium mb-2">
+                              Jenis Tanaman
+                            </label>
+                            <input
+                              type="text"
+                              name="jenisTanaman"
+                              value={formData.jenisTanaman}
+                              onChange={handleInputChange}
+                              className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg sm:rounded-xl bg-gray-50 border border-gray-200 focus:border-amber-500 focus:ring-2 focus:ring-amber-200 transition-all duration-300"
+                              placeholder="Masukkan jenis tanaman..."
+                              step="0.1"
+                              min="0"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="space-y-4">
+                          <div>
+                            <label className="block text-gray-700 font-medium mb-2">
+                              Tanggal Tanam
+                            </label>
+                            <input
+                              type="date"
+                              name="tanggalTanam"
+                              value={formData.tanggalTanam}
+                              onChange={handleInputChange}
+                              className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg sm:rounded-xl bg-gray-50 border border-gray-200 focus:border-amber-500 focus:ring-2 focus:ring-amber-200 transition-all duration-300"
+                              placeholder="Masukkan tanggal tanam..."
+                              step="0.1"
+                              min="0"
+                            />
+                          </div>
+                        </div>
+
+                        <button
+                          type="submit"
+                          className="w-full px-4 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl bg-amber-500 hover:bg-amber-600 text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed font-semibold shadow-lg shadow-amber-200"
+                          onClick={analyzePlantGrowth}
+                          disabled={
+                            isLoading ||
+                            !formData.jenisTanaman ||
+                            !formData.tanggalTanam
+                          }
+                        >
+                          {isLoading ? "Memproses..." : "Dapatkan Rekomendasi"}
+                        </button>
+                      </form>
+                      {error && (
+                        <div className="text-red-500 p-3 rounded-lg bg-red-50">
+                          {error}
+                        </div>
+                      )}
+
+                      {/* {analysis && (
+                        <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
+                          <h3 className="font-semibold text-amber-800 mb-2">
+                            Analisis:
+                          </h3>
+                          <p className="text-amber-900">{analysis}</p>
+                        </div>
+                      )} */}
+
+                      {growthData.length > 0 && (
+                        <div className="bg-white p-4 rounded-lg shadow">
+                          <div className="h-96">
+                            <Line options={chartOptions} data={chartData} />
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Output Section */}
+                  <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-4 sm:p-8 transition-transform duration-300 hover:scale-[1.02]">
+                    {recommendation && (
+                      <div className="flex flex-col items-start space-y-4 sm:space-y-6">
+                        <div className="flex items-center space-x-3">
+                          <div className="p-2 sm:p-3 bg-amber-50 rounded-lg sm:rounded-xl">
+                            <BsCpu size={24} className="text-amber-600" />
+                          </div>
+                          <h1 className="text-lg sm:text-xl font-bold text-gray-800">
+                            Prediksi Panen
+                          </h1>
+                        </div>
+                        <div className="w-full p-4 sm:p-6 bg-gray-50 rounded-lg sm:rounded-xl">
+                          <div className="prose max-w-none text-gray-700 whitespace-pre-line">
+                            {recommendation}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Weather Forecast Section */}
+
+            <WeatherForecast />
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default PrediksiTanaman;
+export default DashboardManajemenLahan;
