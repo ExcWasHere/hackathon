@@ -53,7 +53,7 @@ ChartJS.register(
 );
 
 const groq = new Groq({
-  apiKey: import.meta.env.VITE_GROQ_API_KEY,
+  apiKey: "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",
   dangerouslyAllowBrowser: true,
 });
 

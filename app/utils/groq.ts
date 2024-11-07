@@ -1,7 +1,7 @@
 import { Groq } from "groq-sdk";
 
 const groq = new Groq({
-  apiKey: import.meta.env.VITE_GROQ_API_KEY,
+  apiKey: "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",
   dangerouslyAllowBrowser: true,
 });
 
@@ -17,6 +17,7 @@ export const requestToAI = async (content: string) => {
       model: "llama3-70b-8192",
     });
     return reply.choices[0].message.content;
+    return "AI functionality temporarily disabled";
   } catch (error) {
     console.error("Error in requestToAI:", error);
     throw error;
