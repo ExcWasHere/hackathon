@@ -52,8 +52,6 @@ ChartJS.register(
   Legend
 );
 
-const GROQ_API = import.meta.env.VITE_GROQ_API_KEY;
-
 const groq = new Groq({
   apiKey: "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",
   dangerouslyAllowBrowser: true,
